@@ -1,0 +1,20 @@
+#cloud-config
+# Runs once, automatically, the first time the server boots.
+
+# Patch the OS, then install Nginx (a web server).
+package_update: true
+packages:
+  - nginx
+
+# Drop in a simple home page.
+write_files:
+  - path: /var/www/html/index.html
+    content: |
+      <!doctype html>
+      <h1>Hello from the cloud</h1>
+      <p>Provisioned by Terraform, configured by cloud-init.</p>
+
+# Make sure Nginx is running and starts on every boot.
+runcmd:
+  - systemctl enable nginx
+  - systemctl restart nginx
